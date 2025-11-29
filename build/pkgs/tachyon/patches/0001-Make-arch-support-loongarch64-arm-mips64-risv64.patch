@@ -1,0 +1,50 @@
+From 08bb29a209574d166b059a969bb8e62395466415 Mon Sep 17 00:00:00 2001
+From: pch666777 <1005100717@qq.com>
+Date: Sat, 29 Nov 2025 13:52:57 +0800
+Subject: [PATCH] Make-arch support loongarch64, arm, mips64, risv64
+
+---
+ unix/Make-arch | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/unix/Make-arch b/unix/Make-arch
+index 6779f26..38b27be 100644
+--- a/unix/Make-arch
++++ b/unix/Make-arch
+@@ -1929,6 +1929,33 @@ linux-arm64-thr-optix:
+ 	"RANLIB = ranlib" \
+ 	"LIBS = -L. -ltachyonoptix $(MISCLIB) $(CUDALIB) -ldl -lrt -lm -lpthread"
+ 
++# Linux Arm using gcc
++linux-arm:
++	$(MAKE) all \
++	"ARCH = linux-arm" \
++	"CFLAGS = -Wall -O3 -fomit-frame-pointer -ffast-math -DLinux $(MISCFLAGS)" \
++	"ARFLAGS = r" \
++	"STRIP = strip" \
++	"RANLIB = ranlib" \
++	"LIBS = -L. -ltachyon $(MISCLIB) -lm -lpthread"
++
++# Linux Arm using gcc, with threads
++linux-arm-thr:
++	$(MAKE) all \
++	"ARCH = linux-arm-thr" \
++	"CFLAGS = -Wall -O3 -fomit-frame-pointer -ffast-math -DLinux -DTHR -D_REENTRANT $(MISCFLAGS)" \
++	"ARFLAGS = r" \
++	"STRIP = strip" \
++	"LIBS = -L. -ltachyon $(MISCLIB) -lm -lpthread"
++
++# Linux Generic using gcc, with threads
++linux-generic-thr:
++	$(MAKE) all \
++	"ARCH = linux-generic-thr" \
++	"CFLAGS = -Wall -O3 -fomit-frame-pointer -ffast-math -DLinux -DTHR -D_REENTRANT $(MISCFLAGS)" \
++	"ARFLAGS = r" \
++	"STRIP = strip" \
++	"LIBS = -L. -ltachyon $(MISCLIB) -lm -lpthread"
+ 
+ # Linux on AMD64/EM64T, using 'cc', 'c++', and 'nvcc'
+ linux-64-thr-optix:
+-- 
+2.52.0
+
